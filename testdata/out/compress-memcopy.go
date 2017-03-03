@@ -206,7 +206,7 @@ var _bindata = map[string]func() (*asset, error){
 	"in/a/test.asset": inATestAsset,
 	"in/b/test.asset": inBTestAsset,
 	"in/c/test.asset": inCTestAsset,
-	"in/test.asset": inTestAsset,
+	"in/test.asset":   inTestAsset,
 }
 
 // AssetDir returns the file names below a certain
@@ -248,6 +248,7 @@ type bintree struct {
 	Func     func() (*asset, error)
 	Children map[string]*bintree
 }
+
 var _bintree = &bintree{nil, map[string]*bintree{
 	"in": &bintree{nil, map[string]*bintree{
 		"a": &bintree{nil, map[string]*bintree{
@@ -281,11 +282,7 @@ func RestoreAsset(dir, name string) error {
 	if err != nil {
 		return err
 	}
-	err = os.Chtimes(_filePath(dir, name), info.ModTime(), info.ModTime())
-	if err != nil {
-		return err
-	}
-	return nil
+	return os.Chtimes(_filePath(dir, name), info.ModTime(), info.ModTime())
 }
 
 // RestoreAssets restores an asset under the given directory recursively
@@ -309,4 +306,3 @@ func _filePath(dir, name string) string {
 	cannonicalName := strings.Replace(name, "\\", "/", -1)
 	return filepath.Join(append([]string{dir}, strings.Split(cannonicalName, "/")...)...)
 }
-

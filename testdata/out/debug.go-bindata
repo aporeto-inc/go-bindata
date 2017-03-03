@@ -229,11 +229,7 @@ func RestoreAsset(dir, name string) error {
         if err != nil {
                 return err
         }
-        err = os.Chtimes(_filePath(dir, name), info.ModTime(), info.ModTime())
-        if err != nil {
-                return err
-        }
-        return nil
+        return os.Chtimes(_filePath(dir, name), info.ModTime(), info.ModTime())
 }
 
 // Restore assets under the given directory recursively
@@ -256,4 +252,3 @@ func _filePath(dir, name string) string {
         cannonicalName := strings.Replace(name, "\\", "/", -1)
         return filepath.Join(append([]string{dir}, strings.Split(cannonicalName, "/")...)...)
 }
-
